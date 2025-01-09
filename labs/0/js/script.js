@@ -96,7 +96,9 @@ function createBoxes(){
     // then removes it
     const wrongMsgDiv = document.getElementById("wrongMsg");
     if (wrongMsgDiv.hasChildNodes()) {
-        wrongMsgDiv.style.display = "none";
+        while (wrongMsgDiv.firstChild) {
+            wrongMsgDiv.removeChild(wrongMsgDiv.firstChild);
+        }
     }
 
     game()
