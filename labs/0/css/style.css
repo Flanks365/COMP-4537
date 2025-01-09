@@ -1,0 +1,16 @@
+#main_content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#boxs{
+    width: 15em;
+}
+
+#buttonGo{
+    width: 5em;
+
+}
