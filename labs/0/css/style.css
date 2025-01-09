@@ -6,6 +6,11 @@
 
 }
 
+#boxes, #button, #wrongMsg{
+    text-align: center; 
+    margin: auto;
+}
+
 #boxs{
     width: 15em;
 }
