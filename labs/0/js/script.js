@@ -101,6 +101,18 @@ function createBoxes(){
 
     game()
 
+
+    function wrongMsg(){
+        const wrongMsgDiv = document.getElementById("wrongMsg");
+    
+        const wrong = document.createElement("div");
+        wrong.textContent = warning;
+        wrong.style.color = "red";
+        wrong.style.fontSize = "3em";
+    
+        wrongMsgDiv.appendChild(wrong);
+    }
+
 };
 
 window.createBoxes = createBoxes;
@@ -202,6 +214,22 @@ function game(){
                         
                         wrongMsgDiv.appendChild(loser);
                         }
+
+                        
+                        function winnerMsg(){
+                        
+                        const wrongMsgDiv = document.getElementById("wrongMsg");
+                        
+                        
+                        const winner = document.createElement("div");
+                        winner.textContent = winnermsg;
+                        winner.style.color = "green";
+                        winner.style.fontSize = "3em";
+                        
+                        wrongMsgDiv.appendChild(winner);
+                        
+                        }
+                        
                 
                 }
             });
@@ -211,31 +239,4 @@ function game(){
 
     
     
-}
-
-
-
-function wrongMsg(){
-    const wrongMsgDiv = document.getElementById("wrongMsg");
-
-    const wrong = document.createElement("div");
-    wrong.textContent = warning;
-    wrong.style.color = "red";
-    wrong.style.fontSize = "3em";
-
-    wrongMsgDiv.appendChild(wrong);
-}
-
-function winnerMsg(){
-
-const wrongMsgDiv = document.getElementById("wrongMsg");
-
-
-const winner = document.createElement("div");
-winner.textContent = winnermsg;
-winner.style.color = "green";
-winner.style.fontSize = "3em";
-
-wrongMsgDiv.appendChild(winner);
-
 }
