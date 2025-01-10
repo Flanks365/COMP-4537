@@ -188,7 +188,22 @@ function game(){
                         currentNumber = 1;
                         winnerMsg();
                         boxes.length = 0;
+
+                        function winnerMsg(){
+                        
+                            const wrongMsgDiv = document.getElementById("wrongMsg");
+                            
+                            
+                            const winner = document.createElement("div");
+                            winner.textContent = winnermsg;
+                            winner.style.color = "green";
+                            winner.style.fontSize = "3em";
+                            
+                            wrongMsgDiv.appendChild(winner);
+                            
+                            }
                     }
+
                 } else {
 
                     buttons.forEach(btn => btn.textContent = btn.id);
@@ -217,20 +232,6 @@ function game(){
                         wrongMsgDiv.appendChild(loser);
                         }
 
-                        
-                        function winnerMsg(){
-                        
-                        const wrongMsgDiv = document.getElementById("wrongMsg");
-                        
-                        
-                        const winner = document.createElement("div");
-                        winner.textContent = winnermsg;
-                        winner.style.color = "green";
-                        winner.style.fontSize = "3em";
-                        
-                        wrongMsgDiv.appendChild(winner);
-                        
-                        }
                         
                 
                 }
