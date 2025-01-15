@@ -13,24 +13,29 @@ function updateDiv() {
 
 function getMsg(){
     let messJson = localStorage.getItem("messages");
+
     if(messJson !== null){
+
     let messages = JSON.parse(messJson);
-    let index = 0;
+    
     
 
     messages.forEach(message => {
         const messageDiv = document.createElement('div');
-        messageDiv.id = index;
+        messageDiv.id = message.index;
         messageDiv.className = 'msgDiv';
 
         const messageContent = document.createElement('span');
-        messageContent.textContent = message;
+        messageContent.textContent = message.message;
 
         messageDiv.appendChild(messageContent);
-        if (!document.getElementById(index)) {
+
+        if (!document.getElementById(message.index)) {
+
             document.getElementById('messageContainer').appendChild(messageDiv);
+
         }
-        index++;
+
     });
 }
 }
