@@ -36,7 +36,7 @@ function getMsg(){
 }
 
 document.getElementById('returnButton').addEventListener('click', function() {
-    window.location.href = '1/index.html';
+    window.location.href = 'index.html';
 });
 
 updateDiv();
