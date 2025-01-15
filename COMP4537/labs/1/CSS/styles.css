@@ -1,0 +1,36 @@
+#messageContainer {
+    margin-top: 20px;
+}
+#messageInput {
+    display: none;
+    margin-top: 10px;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.msgDiv{
+    display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 2px solid black;
+      padding: 10px;
+      margin: 10px 0;
+      max-width: 300px; 
+}
+
+.message{
+    flex: 1;
+    font-size: 16px;
+    margin-right: 10px;
+    word-wrap: break-word;
+    max-width: 50%; 
+}
+
+.remove{
+    flex-shrink: 0;
+}
