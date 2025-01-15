@@ -1,9 +1,9 @@
 document.getElementById('readButton').addEventListener('click', function() {
-    window.location.href = '1/reader.html';
+    window.location.href = 'reader.html';
 });
 
 
 
 document.getElementById('writeButton').addEventListener('click', function() {
-    window.location.href = '1/writer.html';
+    window.location.href = 'writer.html';
 });
