@@ -68,7 +68,7 @@ function updateDiv() {
 
         addMsg();
 
-        document.getElementById("timeSaved").textContent = new Date().toLocaleTimeString();
+        document.getElementById("timeSaved").textContent = timeSaved + new Date().toLocaleTimeString();
 
         const removeButtons = document.getElementsByClassName('remove');
 
@@ -81,7 +81,7 @@ function updateDiv() {
                 storedMessages.splice(index, 1);
 
                 localStorage.setItem("messages", JSON.stringify(storedMessages));
-                
+
                 document.getElementById(index).remove();
                 
 
