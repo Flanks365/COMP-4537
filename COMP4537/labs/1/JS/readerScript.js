@@ -13,6 +13,7 @@ function updateDiv() {
 
 function getMsg(){
     let messJson = localStorage.getItem("messages");
+    if(messJson !== null){
     let messages = JSON.parse(messJson);
     let index = 0;
     
@@ -31,6 +32,7 @@ function getMsg(){
         }
         index++;
     });
+}
 }
 
 document.getElementById('returnButton').addEventListener('click', function() {

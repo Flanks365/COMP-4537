@@ -42,9 +42,45 @@ function updateDiv() {
 
                 const index = button.dataset.index;
                 msg.splice(index, 1);
+                storedMessages.splice(index, 1);
+                localStorage.setItem("messages", JSON.stringify(storedMessages));
                 document.getElementById(index).remove();
+                
 
             });
+        });
+
+        const editButtons = document.getElementsByClassName('edit');
+
+        Array.from(editButtons).forEach(button => {
+            button.addEventListener('click', function() {
+
+                const index = button.dataset.index;
+                const messageDiv = document.getElementById(index);
+                const messageContent = messageDiv.querySelector('.message');
+
+                const editInput = document.createElement('input');
+                editInput.type = 'text';
+                editInput.value = messageContent.textContent;
+                editInput.className = 'editInput';
+
+                const saveButton = document.createElement('button');
+                saveButton.textContent = 'Save';
+                saveButton.className = 'save';
+
+                messageDiv.replaceChild(editInput, messageContent);
+                messageDiv.appendChild(saveButton);
+
+                saveButton.addEventListener('click', function() {
+                    messageContent.textContent = editInput.value;
+                    msg[index] = editInput.value;
+                    storedMessages[index] = editInput.value;
+                    localStorage.setItem("messages", JSON.stringify(storedMessages));
+                    messageDiv.replaceChild(messageContent, editInput);
+                    messageDiv.removeChild(saveButton);
+                });
+
+        });
         });
 
     }, 2000);
@@ -52,6 +88,7 @@ function updateDiv() {
 
 function addMsg(){
     let messJson = localStorage.getItem("messages");
+    if(messJson !== null){
     let messages = JSON.parse(messJson);
     
 
@@ -69,13 +106,22 @@ function addMsg(){
         removeButton.className = 'remove';
         removeButton.dataset.index = msg.indexOf(message);
 
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.className = 'edit';
+        editButton.dataset.index = msg.indexOf(message);
+
+
+        messageDiv.appendChild(editButton);
 
         messageDiv.appendChild(messageContent);
         messageDiv.appendChild(removeButton);
         if (!document.getElementById(msg.indexOf(message))) {
             document.getElementById('messageContainer').appendChild(messageDiv);
         }
+
     });
+}
 }
 
 document.getElementById('returnButton').addEventListener('click', function() {
