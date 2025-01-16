@@ -2,11 +2,12 @@ let msg = [];
 
 let total_size = 0;
 
-// For this Lab I deemed that 2 classes are all the classes
+// For this Lab I deemed that 1 class was all
 // that I will require for this lab
 // as my buttons are based on the messages index 
 // and the message just needs to contain its index
 // and its message
+// and creating a class for an index seems redundant
 
 class Message {
     constructor(message, index){
@@ -22,16 +23,6 @@ class Message {
         return this.index;
     }
 
-}
-
-class indexs{
-    constructor(index){
-        this.index = index;
-    }
-
-    getindex(){
-        return this.index;
-    }
 }
 
 // Gpt used for QA purposes
