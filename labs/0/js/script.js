@@ -1,4 +1,6 @@
 
+// has a relation ship with id
+// and color
 class Box{
 
     constructor(value,color, id){
@@ -50,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", createBoxes);
 });
 
-// generates a random hex colour
+// generates a random hex colour to be used for the boxes
 function generateColour(){
     const randomColor = Math.floor(Math.random()*16777215).toString(16);
     return randomColor;
@@ -71,15 +73,18 @@ function createBoxes(){
 
     // makes the boxes / buttons
     for(let i = 1; i <= input; i++){
-        console.log(i);
+        
         let id = new Idbox(i);
+
         let color = new colorBox(generateColour());
+
         boxes.push(new Box(id, color, id));
         
     }
 
     // adjusts the stylings of the button/divs that will be put on screen
     // according to the objects
+    // and places all the boxes on screen
     for(let i = 0; i < boxes.length; i++){
 
         const button = document.createElement("button");
@@ -101,9 +106,13 @@ function createBoxes(){
         }
     }
 
+    // executes the game
     game()
 
 
+    // displays the wrong message
+    // put in same scope as createBoxes
+    // so it can be used in the createBoxes
     function wrongMsg(){
         const wrongMsgDiv = document.getElementById("wrongMsg");
     
@@ -145,7 +154,7 @@ function game(){
                 button.style.top = `${Math.random() * 80}vh`;
                 button.style.left = `${Math.random() * 80}vw`;
                 button.textContent = "";
-                button.disabled = true; // remove click event
+                button.disabled = true; // turns off buttons for moving
             });
         }
 
@@ -159,7 +168,7 @@ function game(){
             moveCount++;
             if (moveCount >= input) {
                 buttons.forEach(button => {
-                    button.disabled = false; // Re add click event
+                    button.disabled = false; // Turns the buttons back on
                 });
                 clearInterval(moveInterval);
             }
@@ -177,9 +186,16 @@ function game(){
             button.addEventListener("click", () => {
                 if (parseInt(button.id) === currentNumber) {
 
+                    // grabs the ID which represents the number
+                    // places it in the button for viewing
                     button.textContent = button.id;
+
+                    // increments the number needed
+                    // because its ascending numerical order
                     currentNumber++;
 
+                    // unused check for if the array is smaller then current Number
+                    // was going to be used for a loss case
                     if (currentNumber > buttons.length) {
 
                         buttons.forEach(btn => btn.remove());
@@ -189,11 +205,13 @@ function game(){
                         winnerMsg();
                         boxes.length = 0;
 
+                        // displays the winner message
+                        // put in same scope as createBoxes
                         function winnerMsg(){
                         
                             const wrongMsgDiv = document.getElementById("wrongMsg");
                             
-                            
+                            // creates the message dynamically
                             const winner = document.createElement("div");
                             winner.textContent = winnermsg;
                             winner.style.color = "green";
@@ -206,20 +224,27 @@ function game(){
 
                 } else {
 
+                    // grabs all the buttons currently on screen
                     buttons.forEach(btn => btn.textContent = btn.id);
 
+                    // sets a timout for how long they can see the buttons
                     setTimeout(() => {
 
+                        // removes all the buttons
                         buttons.forEach(btn => btn.remove());
                         
+                        // displays the original starting box and button
                         document.getElementById("button").style.display = "block";
                     
+                        // resets variables and displays the loser message
                         currentNumber = 1;
                         loserMsg();
                         boxes.length = 0;
 
                     }, 1000 * input);
 
+                    // loser message in same scope as the above timeout so it 
+                    // be accessed in the timeout
                     function loserMsg(){
                         const wrongMsgDiv = document.getElementById("wrongMsg");
                         
