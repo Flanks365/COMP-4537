@@ -1,14 +1,81 @@
-let msg = [];
 
-let total_size = 0;
+//the writer class will contain the array and methods to add, remove, and edit messages
+// also will contain methods to store in the local storage and pull from the local storage as well
 
-// For this Lab I deemed that 1 class was all
-// that I will require for this lab
-// as my buttons are based on the messages index 
-// and the message just needs to contain its index
-// and its message
-// and creating a class for an index seems redundant
+class Writer{
+    msg;
+    total_size;
+    local_store;
 
+    constructor(){
+        this.msg = [];
+        this.total_size = 0;
+        this.local_store = [];
+    }
+
+    addMsg(message){
+
+        if(!this.msg.some(stored => stored.index === message.index)){
+
+            this.msg.push(message);
+            this.total_size++;
+
+        }
+
+    }
+
+    removeMsg(index){
+
+        this.msg.splice(index, 1);
+        this.local_store.splice(index, 1);
+
+        this.total_size--;
+    }
+
+    editMsg(index, message){
+        this.msg[index] = message;
+        this.local_store[index] = message
+        this.store_local();
+    }
+
+    getMsg_s(){
+        return this.local_store;
+    }
+
+    retrieve_local(){
+        let local_s = localStorage.getItem("messages");
+        this.local_store = JSON.parse(local_s);
+
+        if(this.local_store !== null){
+
+           this.msg.forEach(message => {
+                if(!this.local_store.some(stored => stored.index === message.index)){
+                    this.local_store.push(message);
+                }
+            }
+           )
+        } else {
+            this.local_store = [];
+        }
+    }
+
+    store_local(){
+        localStorage.setItem("messages", JSON.stringify(this.msg));
+    }
+
+    get_total_size(){
+        return this.total_size;
+    }
+
+    total_size_up(){
+        this.total_size++;
+    }
+
+}
+
+
+// I have a message class that will be used to create
+// message objects that will be stored in the array
 class Message {
     constructor(message, index){
         this.message = message;
@@ -25,6 +92,8 @@ class Message {
 
 }
 
+let writer = new Writer();
+
 // Gpt used for QA purposes
 
 // when add button is pressed the text box is displayed
@@ -40,18 +109,14 @@ document.getElementById('submitMessage').addEventListener('click', function() {
 
     // checks if it is all whitespace if it is don't execute the code
     if (messageText.trim() !== '') {
-
-        // creates a new div to hold the message
-        const newMessageDiv = document.createElement('div');
-
-        // makes the content the input from the above text box
-        newMessageDiv.textContent = messageText;
         
         //creates an object of the message
-        let newMessage = new Message(messageText, msg.length);
+        let newMessage = new Message(messageText, writer.get_total_size());
 
-        // adds it to the array of objects
-        msg.push(newMessage);
+        writer.total_size_up();
+
+        writer.addMsg(newMessage);
+       
         
         // resets the text box and hides it.
         document.getElementById('messageText').value = '';
@@ -71,26 +136,9 @@ function updateDiv() {
     // sets a 2 second interval so every 2 seconds execute the code
     setInterval(function() {
 
-        // grabs the stored messages from local storage
-        // if the storage returns nothing or null make an empty array
-        let storedMessages = JSON.parse(localStorage.getItem("messages")) || [];
+        writer.retrieve_local();
 
-        // check the current array in the session storage
-        // if any discrepencies are found add them to the stored messages
-        msg.forEach(message => {
-
-            // .some will return true if any of the elements pass
-            // not if all pass but if atleast one pass
-            // so if the index exists in some way it will return true
-            // which means it doesn't have to be added.
-            if (!storedMessages.some(stored => stored.index === message.index)) {
-                storedMessages.push(message);
-            }
-        });
-
-        // after checking the stored messages array
-        // overwrite the local storage with the updated array
-        localStorage.setItem("messages", JSON.stringify(storedMessages));
+        writer.store_local();
 
         addMsg();
 
@@ -112,11 +160,10 @@ function updateDiv() {
 
                 // removes the index that was stored in the array in 
                 // both the localstorage array and session storage
-                msg.splice(index, 1);
-                storedMessages.splice(index, 1);
+                writer.removeMsg(index);
 
                 // overwrites the local storage with the updated array
-                localStorage.setItem("messages", JSON.stringify(storedMessages));
+                writer.store_local();
 
                 // gets rid of the div that matches the index
                 document.getElementById(index).remove();
@@ -182,11 +229,10 @@ function updateDiv() {
 
                     // replaces the old message with the new message
                     // in both session storage and local storage
-                    msg[index] = newMess;
-                    storedMessages[index] = newMess;
+                    writer.editMsg(index, newMess);
 
                     // overwrites the local storage with the updated array
-                    localStorage.setItem("messages", JSON.stringify(storedMessages));
+                    writer.store_local();
 
                     // replaces the input field with the content of the message
                     messageDiv.replaceChild(messageContent, editInput);
@@ -209,20 +255,14 @@ function updateDiv() {
 function addMsg(){
 
     // grabs the stored messages from local storage
-    let messJson = localStorage.getItem("messages");
+    let messJson = writer.getMsg_s();
 
     // if the storage returns nothing don't do anything
     if(messJson !== null){
-
-    // parses the json string into an array of objects
-    // these objects will not have the same methods as the class
-    // in the script so they follow key value pairs rules
-    // so the names message and index will be used as keys
-    let messages = JSON.parse(messJson);
     
 
     // for each message in the local storage
-    messages.forEach(message => {
+    messJson.forEach(message => {
         
         //create a div
         const messageDiv = document.createElement('Div');
