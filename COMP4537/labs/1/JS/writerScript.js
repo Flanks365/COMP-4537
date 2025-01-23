@@ -2,76 +2,102 @@
 //the writer class will contain the array and methods to add, remove, and edit messages
 // also will contain methods to store in the local storage and pull from the local storage as well
 
-class Writer{
-    msg;
-    total_size;
-    local_store;
+class Writer {
+    // Properties to store messages, total size of messages, and a local storage reference
+    msg;           // Array to hold all messages added to the Writer instance
+    total_size;    // Counter to track the total number of messages
+    local_store;   // Array to hold locally stored messages from localStorage
 
-    constructor(){
+    constructor() {
+        // Initializes the Writer instance with empty arrays and a total size of 0
         this.msg = [];
         this.total_size = 0;
         this.local_store = [];
     }
 
-    addMsg(message){
-
-        if(!this.msg.some(stored => stored.index === message.index)){
-
-            this.msg.push(message);
-            this.total_size++;
-
+    /**
+     * Adds a message to the `msg` array if it doesn't already exist.
+     * @param {Object} message - The message object to be added.
+     */
+    addMsg(message) {
+        // Check if the message with the same index already exists
+        if (!this.msg.some(stored => stored.index === message.index)) {
+            this.msg.push(message); // Add the new message to the array
+            this.total_size++;      // Increment the total size counter
         }
-
     }
 
-    removeMsg(index){
-
-        this.msg.splice(index, 1);
-        this.local_store.splice(index, 1);
-
-        this.total_size--;
+    /**
+     * Removes a message from both `msg` and `local_store` arrays based on its index.
+     * Also decrements the total size counter.
+     * @param {number} index - The index of the message to remove.
+     */
+    removeMsg(index) {
+        this.msg.splice(index, 1);          // Remove the message from the `msg` array
+        this.local_store.splice(index, 1); // Remove the corresponding message from `local_store`
+        this.total_size--;                 // Decrement the total size counter
     }
 
-    editMsg(index, message){
-        this.msg[index] = message;
-        this.local_store[index] = message
-        this.store_local();
+    /**
+     * Edits a message in `msg` and `local_store` arrays, then updates localStorage.
+     * @param {number} index - The index of the message to edit.
+     * @param {Object} message - The new message content to replace the existing one.
+     */
+    editMsg(index, message) {
+        this.msg[index] = message;         // Update the message in `msg` array
+        this.local_store[index] = message; // Update the message in `local_store` array
+        this.store_local();                // Save changes to localStorage
     }
 
-    getMsg_s(){
-        return this.local_store;
+    /**
+     * Retrieves all messages stored locally.
+     * @returns {Array} - An array of messages from `local_store`.
+     */
+    getMsg_s() {
+        return this.local_store; // Return all messages stored locally
     }
 
-    retrieve_local(){
-        let local_s = localStorage.getItem("messages");
-        this.local_store = JSON.parse(local_s);
+    /**
+     * Fetches messages from localStorage and updates the `local_store` array.
+     * Ensures no duplicates are added by comparing with `msg`.
+     */
+    retrieve_local() {
+        let local_s = localStorage.getItem("messages"); // Get messages from localStorage
+        this.local_store = JSON.parse(local_s);         // Parse the JSON string into an array
 
-        if(this.local_store !== null){
-
-           this.msg.forEach(message => {
-                if(!this.local_store.some(stored => stored.index === message.index)){
+        if (this.local_store !== null) {
+            // Add messages from `msg` that are not in `local_store`
+            this.msg.forEach(message => {
+                if (!this.local_store.some(stored => stored.index === message.index)) {
                     this.local_store.push(message);
                 }
-            }
-           )
-        } else {
-            this.local_store = [];
+            });
         }
     }
 
-    store_local(){
-        localStorage.setItem("messages", JSON.stringify(this.msg));
+    /**
+     * Saves the current `msg` array to localStorage.
+     */
+    store_local() {
+        localStorage.setItem("messages", JSON.stringify(this.msg)); // Store the `msg` array in localStorage
     }
 
-    get_total_size(){
-        return this.total_size;
+    /**
+     * Returns the current total size of messages.
+     * @returns {number} - The total number of messages.
+     */
+    get_total_size() {
+        return this.total_size; // Return the total message count
     }
 
-    total_size_up(){
-        this.total_size++;
+    /**
+     * Increments the total size counter by 1.
+     */
+    total_size_up() {
+        this.total_size++; // Increment the total size counter
     }
-
 }
+
 
 
 // I have a message class that will be used to create
